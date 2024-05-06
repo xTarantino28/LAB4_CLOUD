@@ -41,6 +41,13 @@ def execute_on_worker(worker_address, script):
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh_client.connect(hostname=worker_address, username=username, password=password)
+    
+    
+    stdin, stdout, stderr = ssh_client.exec_command("sudo -i")
+    # Proporcionar la contraseña a través de stdin
+    stdin.write(password + '\n')
+    stdin.flush()
+    stdin, stdout, stderr = ssh_client.exec_command("cd /home/ubuntu")
     stdin, stdout, stderr = ssh_client.exec_command(script)
     print(stdout.read().decode("utf-8"))
     ssh_client.close()
