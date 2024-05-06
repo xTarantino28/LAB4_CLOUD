@@ -47,21 +47,23 @@ def execute_on_worker(worker_address, script):
     # Proporcionar la contraseña a través de stdin
 
     # Establecer una shell interactiva
-    ssh_session = ssh_client.invoke_shell()
+    #ssh_session = ssh_client.invoke_shell()
     
-    ssh_session.send('cd /home/ubuntu\n')
-    ssh_session.send(script + '\n')
+    #ssh_session.send('cd /home/ubuntu\n')
+    #while not ssh_session.recv_ready():
+    #    pass
+    #ssh_session.send(script + '\n')
     # Esperar a que se solicite la contraseña
-    while not ssh_session.recv_ready():
-        pass
+    #while not ssh_session.recv_ready():
+    #    pass
     # Enviar la contraseña
-    ssh_session.send(password + '\n')
+    #ssh_session.send(password + '\n')
 
     
     #stdin, stdout, stderr = ssh_client.exec_command("cd /home/ubuntu")
-    #stdin, stdout, stderr = ssh_client.exec_command(script)
-    #print(stderr.read().decode("utf-8"))
-    #print(stdout.read().decode("utf-8"))
+    stdin, stdout, stderr = ssh_client.exec_command(script)
+    print(stderr.read().decode("utf-8"))
+    print(stdout.read().decode("utf-8"))
     #output = ssh_session.recv(65535).decode('utf-8')
     #print(output)
     ssh_client.close()
