@@ -74,4 +74,5 @@ ip netns exec "$NombreRed"-dhcp ip addr add "$segunda_direccion_disponible_cidr"
 ip netns exec "$NombreRed"-dhcp dnsmasq --interface="$NombreRed-veth0" --dhcp-range="$RangoDHCP" --dhcp-option=3,"$primera_direccion_disponible_sincdr" --dhcp-option=6,8.8.8.8,8.8.4.4
 
 # Mostrar información
-echo "Red interna del orquestador creada correctamente."
+echo "Red interna $VLAN_ID del orquestador creada correctamente."
+sleep 1
