@@ -61,8 +61,8 @@ for worker_address in worker_addresses:
     execute_on_worker(worker_address, f"bash init_orchestrator/init_worker.sh {worker_ovs_name} {worker_interfaces}")
     #for vlan_param in vlan_parameters:
     #    execute_on_worker(worker_address, f"./vlan_comm.sh {' '.join(vlan_param)}")
-    for vm_param in vm_parameters:
-        execute_on_worker(worker_address,f"bash implement_orchestrator/vm_script.sh {' '.join(vm_param)}")
+    #for vm_param in vm_parameters:
+    #    execute_on_worker(worker_address,f"bash implement_orchestrator/vm_script.sh {' '.join(vm_param)}")
 
 for worker_address in worker_addresses:
     for vm_param in vm_parameters:
