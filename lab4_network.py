@@ -40,7 +40,7 @@ def execute_on_headnode(script):
 def execute_on_worker(worker_address, script):
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh_client.connect(worker_address, username=username, password=password)
+    ssh_client.connect(hostname=worker_address, username=username, password=password)
     stdin, stdout, stderr = ssh_client.exec_command(script)
     print(stdout.read().decode("utf-8"))
     ssh_client.close()
@@ -58,7 +58,7 @@ for vlan_param in vlan_parameters:
 
 # Ejecución de los scripts en los Workers
 for worker_address in worker_addresses:
-    execute_on_worker(worker_address, f"bash init_orchestrator/init_worker.sh {worker_ovs_name} {worker_interfaces}")
+    execute_on_worker(worker_address, f"bash LAB4_CLOUD/init_orchestrator/init_worker.sh {worker_ovs_name} {worker_interfaces}")
     #for vlan_param in vlan_parameters:
     #    execute_on_worker(worker_address, f"./vlan_comm.sh {' '.join(vlan_param)}")
     #for vm_param in vm_parameters:
@@ -66,7 +66,7 @@ for worker_address in worker_addresses:
 
 for worker_address in worker_addresses:
     for vm_param in vm_parameters:
-        execute_on_worker(worker_address,f"bash implement_orchestrator/vm_script.sh {' '.join(vm_param)}")
+        execute_on_worker(worker_address,f"bash LAB4_CLOUD/implement_orchestrator/vm_script.sh {' '.join(vm_param)}")
 
 for vlan_param in vlan_parameters:
     vlan_id = vlan_param[1]
