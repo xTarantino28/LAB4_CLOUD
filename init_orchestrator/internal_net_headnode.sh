@@ -47,7 +47,7 @@ ip link add "$NombreRed-veth0" type veth peer name "$NombreRed-veth1"
 # asignar veth0 al netns dhcp
 ip link set "$NombreRed-veth0" netns "$NombreRed-dhcp"
 # asignar veth1 al ovs
-ovs-vsctl add-port "$brigde" "$NombreRed-veth1"
+ovs-vsctl add-port "$brigde" "$NombreRed-veth1" tag="$VLAN_ID"
 
 
 # prender interfaz veth1 del ovs
