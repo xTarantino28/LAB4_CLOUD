@@ -43,7 +43,7 @@ def execute_on_worker(worker_address, script):
     ssh_client.connect(hostname=worker_address, username=username, password=password)
     
     
-    stdin, stdout, stderr = ssh_client.exec_command("sudo -i")
+    #stdin, stdout, stderr = ssh_client.exec_command("sudo -i")
     # Proporcionar la contraseña a través de stdin
 
     # Establecer una shell interactiva
@@ -59,11 +59,14 @@ def execute_on_worker(worker_address, script):
     # Enviar la contraseña
     ssh_session.send(password + '\n')
 
-
-    stdin, stdout, stderr = ssh_client.exec_command("cd /home/ubuntu")
-    stdin, stdout, stderr = ssh_client.exec_command(script)
-    print(stderr.read().decode("utf-8"))
-    print(stdout.read().decode("utf-8"))
+    ssh_session.send('cd /home/ubuntu\n')
+    ssh_session.send(script + '\n')
+    #stdin, stdout, stderr = ssh_client.exec_command("cd /home/ubuntu")
+    #stdin, stdout, stderr = ssh_client.exec_command(script)
+    #print(stderr.read().decode("utf-8"))
+    #print(stdout.read().decode("utf-8"))
+    output = ssh_session.recv(65535).decode('utf-8')
+    print(output)
     ssh_client.close()
 
 
