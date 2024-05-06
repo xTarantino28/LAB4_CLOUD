@@ -43,30 +43,27 @@ def execute_on_worker(worker_address, script):
     ssh_client.connect(hostname=worker_address, username=username, password=password)
     
     
-    #stdin, stdout, stderr = ssh_client.exec_command("sudo -i")
+      #stdin, stdout, stderr = ssh_client.exec_command("sudo -i")
     # Proporcionar la contraseña a través de stdin
 
     # Establecer una shell interactiva
     ssh_session = ssh_client.invoke_shell()
-    # Esperar a que se establezca la conexión
-    while not ssh_session.recv_ready():
-        pass
-    # Enviar el comando sudo -i
-    ssh_session.send('sudo -i\n')
+    
+    ssh_session.send('cd /home/ubuntu\n')
+    ssh_session.send(script + '\n')
     # Esperar a que se solicite la contraseña
     while not ssh_session.recv_ready():
         pass
     # Enviar la contraseña
     ssh_session.send(password + '\n')
 
-    ssh_session.send('cd /home/ubuntu\n')
-    ssh_session.send(script + '\n')
+    
     #stdin, stdout, stderr = ssh_client.exec_command("cd /home/ubuntu")
     #stdin, stdout, stderr = ssh_client.exec_command(script)
     #print(stderr.read().decode("utf-8"))
     #print(stdout.read().decode("utf-8"))
-    output = ssh_session.recv(65535).decode('utf-8')
-    print(output)
+    #output = ssh_session.recv(65535).decode('utf-8')
+    #print(output)
     ssh_client.close()
 
 
@@ -82,7 +79,7 @@ for vlan_param in vlan_parameters:
 
 # Ejecución de los scripts en los Workers
 for worker_address in worker_addresses:
-    execute_on_worker(worker_address, f"bash LAB4_CLOUD/init_orchestrator/init_worker.sh {worker_ovs_name} {worker_interfaces}")
+    execute_on_worker(worker_address, f"sudo bash LAB4_CLOUD/init_orchestrator/init_worker.sh {worker_ovs_name} {worker_interfaces}")
     #for vlan_param in vlan_parameters:
     #    execute_on_worker(worker_address, f"./vlan_comm.sh {' '.join(vlan_param)}")
     #for vm_param in vm_parameters:
@@ -90,7 +87,7 @@ for worker_address in worker_addresses:
 
 for worker_address in worker_addresses:
     for vm_param in vm_parameters:
-        execute_on_worker(worker_address,f"bash LAB4_CLOUD/implement_orchestrator/vm_script.sh {' '.join(vm_param)}")
+        execute_on_worker(worker_address,f"sudo bash LAB4_CLOUD/implement_orchestrator/vm_script.sh {' '.join(vm_param)}")
 
 #for vlan_param in vlan_parameters:
 #    vlan_id = vlan_param[1]
