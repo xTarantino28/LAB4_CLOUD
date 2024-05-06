@@ -15,7 +15,7 @@ mascara_subred=$(echo $DireccionRed | cut -d '/' -f2)
 IFS='.' read -r -a octetos <<< "$direccion_red"
 octetos[3]=$(( ${octetos[3]} + 1 ))
 primera_direccion_disponible_cidr="${octetos[0]}.${octetos[1]}.${octetos[2]}.${octetos[3]}/$mascara_subred"
-primera_direccion_disponible_sincdr= "${octetos[0]}.${octetos[1]}.${octetos[2]}.${octetos[3]}"
+primera_direccion_disponible_sincdr="${octetos[0]}.${octetos[1]}.${octetos[2]}.${octetos[3]}"
 
 # Calcular la segunda dirección disponible sumando 1 a la primera dirección disponible
 IFS='.' read -r -a octetos_segunda <<< "$primera_direccion_disponible"
@@ -26,7 +26,7 @@ segunda_direccion_disponible_cidr="${octetos_segunda[0]}.${octetos_segunda[1]}.$
 
 
 # crear interfaz interna al OvS con VLAN ID asignado, asumo que va al unico bridge y servira como gateway de la red VLAN
-ovs-vsctl add-port "$brigde" "$NombreRed" tag="$vlan_id" -- set interface "$NombreRed" type=internal 
+ovs-vsctl add-port "$brigde" "$NombreRed" tag="$VLAN_ID" -- set interface "$NombreRed" type=internal 
 ip link set dev "$NombreRed" up     #  "$bridge"  
 
 
@@ -35,20 +35,20 @@ ip link set dev "$NombreRed" up     #  "$bridge"
 ip netns add "$NombreRed"-dhcp
 
 # crear interfaces veth 
-ip link add "$NombreRed"-dhcp-veth0 type veth peer name "$NombreRed"-dhcp-veth1
+ip link add "$NombreRed"-veth0 type veth peer name "$NombreRed"-veth1
 
 # asignar veth0 al netns dhcp
-ip link set "$NombreRed"-dhcp-veth0 netns "$NombreRed"-dhcp
+ip link set "$NombreRed"-veth0 netns "$NombreRed"-dhcp
 # asignar veth1 al ovs
-ovs-vsctl add-port "$brigde" "$NombreRed"-dhcp-veth1
+ovs-vsctl add-port "$brigde" "$NombreRed"-veth1
 
 
 # prender interfaz veth1 del ovs
-ip link set "$NombreRed"-dhcp-veth1 up
+ip link set "$NombreRed"-veth1 up
 
 # prender interfaces loopback y veth0 del netns dhcp
 ip netns exec "$NombreRed"-dhcp ip link set dev lo up
-ip netns exec "$NombreRed"-dhcp ip link set dev "$NombreRed"-dhcp-veth0 up
+ip netns exec "$NombreRed"-dhcp ip link set dev "$NombreRed"-veth0 up
 
 #  prender el bridge ovs
 # ip link set dev "$brigde" up
@@ -59,7 +59,7 @@ ip address add "$primera_direccion_disponible_cidr" dev "$NombreRed"    # o "$br
 
 
 # asignar segunda direccion ip al servicio dhcp
-ip netns exec "$NombreRed"-dhcp ip addr add "$segunda_direccion_disponible_cidr" dev "$NombreRed"-dhcp-veth0
+ip netns exec "$NombreRed"-dhcp ip addr add "$segunda_direccion_disponible_cidr" dev "$NombreRed"-veth0
 
 
 # Configurar DHCP con dnsmasq
