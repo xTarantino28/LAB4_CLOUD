@@ -18,7 +18,7 @@ qemu-system-x86_64 \
 -enable-kvm \
 -vnc 0.0.0.0:"$puertoVNC_local"\
 -netdev tap,id="$interfaz_tap_vm",ifname="$interfaz_tap_vm",script=no,downscript=no \
--device e1000,netdev="$interfaz_tap_vm",mac=20:20:03:34:ee:ff \   # variar los dos ultimos
+-device e1000,netdev="$interfaz_tap_vm",mac=20:20:03:34:ee:0"$puertoVNC_local" \   # variar los dos ultimos
 -daemonize \
 -snapshot \
 cirros-0.5.1-x86_64-disk.img
