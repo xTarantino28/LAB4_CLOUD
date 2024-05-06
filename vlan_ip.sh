@@ -11,6 +11,8 @@ if [ -z "$interface_info" ]; then
     echo "No se encontró ninguna interfaz con VLAN ID $VLAN_ID"
     exit 1
 fi
+
+echo "interface info : $interface_info"
 # Extraer la dirección de red y la máscara de subred de la salida
 # ip_address=$(echo "$interface_info" | awk '/inet / {print $2}') # extrae todo en formato cidr
 

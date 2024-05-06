@@ -18,6 +18,8 @@ if [ -z "$interface_info" ]; then
     echo "No se encontró ninguna interfaz con VLAN ID $VLAN_ID"
     exit 1
 fi
+
+echo "interface info : $interface_info"
 # Extraer la dirección de red y la máscara de subred de la salida
 # ip_address=$(echo "$interface_info" | awk '/inet / {print $2}') # extrae todo en formato cidr
 ip_address=$(echo "$interface_info" | awk '/inet / {split($2, ip_parts, "/"); print ip_parts[1]}')
@@ -29,7 +31,7 @@ ip_network=$(ipcalc -n $ip_address/$subnet_mask | awk '/Network/ {split($2, part
 # Imprimir la dirección de red en formato CIDR
 echo "Dirección de red asociada a la VLAN ID $VLAN_ID (formato CIDR): $ip_network/$subnet_mask"
 vlan_cidr="$ip_network/$subnet_mask"
-
+echo $vlan_cidr
 # regla de iptables para habilitar el enrutamiento
 iptables -t nat -A POSTROUTING -s $vlan_cidr -o $InternetInterface -j MASQUERADE
 
