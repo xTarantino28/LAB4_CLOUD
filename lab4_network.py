@@ -45,10 +45,24 @@ def execute_on_worker(worker_address, script):
     
     stdin, stdout, stderr = ssh_client.exec_command("sudo -i")
     # Proporcionar la contraseña a través de stdin
-    stdin.write(password + '\n')
-    stdin.flush()
+
+    # Establecer una shell interactiva
+    ssh_session = ssh_client.invoke_shell()
+    # Esperar a que se establezca la conexión
+    while not ssh_session.recv_ready():
+        pass
+    # Enviar el comando sudo -i
+    ssh_session.send('sudo -i\n')
+    # Esperar a que se solicite la contraseña
+    while not ssh_session.recv_ready():
+        pass
+    # Enviar la contraseña
+    ssh_session.send(password + '\n')
+
+        
     stdin, stdout, stderr = ssh_client.exec_command("cd /home/ubuntu")
     stdin, stdout, stderr = ssh_client.exec_command(script)
+    print(stderr.read().decode("utf-8"))
     print(stdout.read().decode("utf-8"))
     ssh_client.close()
 
