@@ -69,7 +69,7 @@ ip netns exec "$NombreRed"-dhcp ip addr add "$segunda_direccion_disponible_cidr"
 
 
 # Configurar DHCP con dnsmasq
-ip netns exec "$NombreRed"-dhcp dnsmasq --dhcp-range="$RangoDHCP" --interface="$NombreRed"_dhcp_veth0 --dhcp-option=option:router,"$primera_direccion_disponible_sincdr" --dhcp-option=option:dns-server,8.8.8.8,8.8.4.4
+ip netns exec "$NombreRed"-dhcp dnsmasq --dhcp-range="$RangoDHCP" --interface="$NombreRed"-veth0 --dhcp-option=3,"$primera_direccion_disponible_sincdr" --dhcp-option=6,8.8.8.8,8.8.4.4
 
 # Mostrar información
 echo "Red interna del orquestador creada correctamente."
