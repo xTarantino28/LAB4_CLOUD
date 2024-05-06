@@ -51,6 +51,7 @@ def execute_on_worker(worker_address, script):
 # Ejecución de los scripts en el HeadNode
 execute_on_headnode(f"bash init_orchestrator/init_headnode.sh {headnode_ovs_name} {headnode_interfaces}")
 for vlan_param in vlan_parameters:
+    print(f"bash init_orchestrator/internal_net_headnode.sh {' '.join(vlan_param)}")
     execute_on_headnode(f"bash init_orchestrator/internal_net_headnode.sh {' '.join(vlan_param)}")
     
 
