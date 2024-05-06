@@ -5,7 +5,7 @@ NombreRed="$1"
 VLAN_ID="$2"
 DireccionRed="$3"   # formato CIDR
 RangoDHCP="$4"      # especificar formato
-# brigde = "br-int"
+brigde="br-int"
 
 # Extraer la dirección de red y la máscara de subred
 direccion_red=$(echo $DireccionRed | cut -d '/' -f1)
@@ -32,23 +32,23 @@ ip link set dev "$NombreRed" up     #  "$bridge"
 
 
 # Crear Linux Network Namespace para albergar el servicio DHCP
-ip netns add "$NombreRed"_dhcp
+ip netns add "$NombreRed"-dhcp
 
 # crear interfaces veth 
-ip link add "$NombreRed"_dhcp_veth0 type veth peer name "$NombreRed"_dhcp_veth1
+ip link add "$NombreRed"-dhcp-veth0 type veth peer name "$NombreRed"-dhcp-veth1
 
 # asignar veth0 al netns dhcp
-ip link set "$NombreRed"_dhcp_veth0 netns "$NombreRed"_dhcp
+ip link set "$NombreRed"-dhcp-veth0 netns "$NombreRed"-dhcp
 # asignar veth1 al ovs
-ovs-vsctl add-port "$brigde" "$NombreRed"_dhcp_veth1
+ovs-vsctl add-port "$brigde" "$NombreRed"-dhcp-veth1
 
 
 # prender interfaz veth1 del ovs
-ip link set "$NombreRed"_dhcp_veth1 up
+ip link set "$NombreRed"-dhcp-veth1 up
 
 # prender interfaces loopback y veth0 del netns dhcp
-ip netns exec "$NombreRed"_dhcp ip link set dev lo up
-ip netns exec "$NombreRed"_dhcp ip link set dev "$NombreRed"_dhcp_veth0 up
+ip netns exec "$NombreRed"-dhcp ip link set dev lo up
+ip netns exec "$NombreRed"-dhcp ip link set dev "$NombreRed"-dhcp-veth0 up
 
 #  prender el bridge ovs
 # ip link set dev "$brigde" up
@@ -59,11 +59,11 @@ ip address add "$primera_direccion_disponible_cidr" dev "$NombreRed"    # o "$br
 
 
 # asignar segunda direccion ip al servicio dhcp
-ip netns exec "$NombreRed"_dhcp ip addr add "$segunda_direccion_disponible_cidr" dev "$NombreRed"_dhcp_veth0
+ip netns exec "$NombreRed"-dhcp ip addr add "$segunda_direccion_disponible_cidr" dev "$NombreRed"-dhcp-veth0
 
 
 # Configurar DHCP con dnsmasq
-ip netns exec "$NombreRed"_dhcp dnsmasq --dhcp-range="$RangoDHCP" --interface="$NombreRed"_dhcp_veth0 --dhcp-option=option:router,"$primera_direccion_disponible_sincdr" --dhcp-option=option:dns-server,8.8.8.8,8.8.4.4
+ip netns exec "$NombreRed"-dhcp dnsmasq --dhcp-range="$RangoDHCP" --interface="$NombreRed"_dhcp_veth0 --dhcp-option=option:router,"$primera_direccion_disponible_sincdr" --dhcp-option=option:dns-server,8.8.8.8,8.8.4.4
 
 # Mostrar información
 echo "Red interna del orquestador creada correctamente."
