@@ -7,10 +7,10 @@ VLAN_ID="$3"
 PuertoVNC="$4"
 
 
-puertoVNC_local = "$((PuertoVNC - 5900))"
+puertoVNC_local="$((PuertoVNC - 5900))"
 
 # crear interfaz TAP
-interfaz_tap_vm = "$NombreOvS"-"$NombreVM"-tap
+interfaz_tap_vm="$NombreOvS"-"$NombreVM"-tap
 ip tuntap add mode tap name "$interfaz_tap_vm"
 
 # crear VM (script lab2)

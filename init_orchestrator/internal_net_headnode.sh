@@ -5,7 +5,7 @@ NombreRed="$1"
 VLAN_ID="$2"
 DireccionRed="$3"   # formato CIDR
 RangoDHCP="$4"      # especificar formato
-brigde = "br-int"
+# brigde = "br-int"
 
 # Extraer la dirección de red y la máscara de subred
 direccion_red=$(echo $direccion_red_cidr | cut -d '/' -f1)
@@ -26,8 +26,7 @@ segunda_direccion_disponible_cidr="${octetos_segunda[0]}.${octetos_segunda[1]}.$
 
 
 # crear interfaz interna al OvS con VLAN ID asignado, asumo que va al unico bridge y servira como gateway de la red VLAN
-ovs-vsctl add-port "$brigde" "$NombreRed" tag="$vlan_id"
-ovs-vsctl set interface "$NombreRed" type=internal 
+ovs-vsctl add-port "$brigde" "$NombreRed" tag="$vlan_id" -- set interface "$NombreRed" type=internal 
 ip link set dev "$NombreRed" up     #  "$bridge"  
 
 
