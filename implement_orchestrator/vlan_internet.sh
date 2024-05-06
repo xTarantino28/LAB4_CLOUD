@@ -28,7 +28,7 @@ subnet_mask=$(echo "$interface_info" | awk '/inet / {print $2}' | awk -F/ '{prin
 ip_network=$(ipcalc -n $ip_address/$subnet_mask | awk '/Network/ {split($2, parts, "/"); print parts[1]}')
 # Imprimir la dirección de red en formato CIDR
 echo "Dirección de red asociada a la VLAN ID $VLAN_ID (formato CIDR): $ip_network/$subnet_mask"
-vlan_cidr = "$ip_network/$subnet_mask"
+vlan_cidr="$ip_network/$subnet_mask"
 
 # regla de iptables para habilitar el enrutamiento
 iptables -t nat -A POSTROUTING -s $vlan_cidr -o $InternetInterface -j MASQUERADE
