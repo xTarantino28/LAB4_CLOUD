@@ -12,6 +12,8 @@ for iface in $InterfacesAConectar; do
     ovs-vsctl add-port "$nombreOvS" "$iface"
 done
 
+ip link set dev "$nombreDeOvS" up
+
 # activar IPv4 Forwarding
 sysctl -w net.ipv4.ip_forward=1
 

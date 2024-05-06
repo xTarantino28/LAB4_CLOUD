@@ -25,7 +25,7 @@ cirros-0.5.1-x86_64-disk.img
 
 # Conectar interfaz TAP al OvS del host local con el VLAN ID correspondiente
 ovs-vsctl add-port "$NombreOvS" "$interfaz_tap_vm" tag="$VLAN_ID"
-ip link set "$interfaz_tap_vm" up
+ip link set dev "$interfaz_tap_vm" up
 
 # Mostrar información
 echo "VM $NombreVM creada y conectada al OvS $NombreOvS con VLAN ID $VLAN_ID."

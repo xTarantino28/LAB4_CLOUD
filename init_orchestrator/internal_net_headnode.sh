@@ -52,7 +52,7 @@ ip netns exec "$NombreRed"_dhcp ip link set dev lo up
 ip netns exec "$NombreRed"_dhcp ip link set dev "$NombreRed"_dhcp_veth0 up
 
 #  prender el bridge ovs
-ip link set dev "$brigde" up
+# ip link set dev "$brigde" up
 
 
 # configurar interfaz interna del ovs correspondiente a la vlan

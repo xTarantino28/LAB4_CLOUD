@@ -13,5 +13,7 @@ for iface in $InterfacesAConectar; do
     ovs-vsctl add-port "$nombreDeOvS" "$iface"
 done
 
+ip link set dev "$nombreDeOvS" up
+
 # mostrar confirmacion de inicializacion
 echo "Worker inicializado correctamente."
