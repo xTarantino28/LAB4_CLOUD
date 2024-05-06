@@ -13,9 +13,9 @@ headnode_ovs_name = "br-int"
 headnode_interfaces = "ens5"  # Coloca las interfaces del HeadNode aquí
 worker_ovs_name = "br-int"
 worker_interfaces = "ens4"  # Coloca las interfaces de los Workers aquí
-vlan_parameters = [("vlan100", "100", "10.0.100.0/24", "10.0.100.3,10.0.100.100,255.255.255.0"),
-                   ("vlan200", "200", "10.0.200.0/24", "10.0.200.3,10.0.200.100,255.255.255.0"),
-                   ("vlan300", "300", "10.0.300.0/24", "10.0.300.3,10.0.300.100,255.255.255.0")]
+vlan_parameters = [("vlan100", "100", "10.0.101.0/24", "10.0.101.3,10.0.101.100,255.255.255.0"),
+                   ("vlan200", "200", "10.0.102.0/24", "10.0.102.3,10.0.102.100,255.255.255.0"),
+                   ("vlan300", "300", "10.0.103.0/24", "10.0.103.3,10.0.103.100,255.255.255.0")]
 vm_parameters = [("vm1", "br-int", "100", "5901"),  # Coloca los parámetros de las VMs aquí
                  ("vm2", "br-int", "200", "5902"),
                  ("vm3", "br-int", "300", "5903")]
