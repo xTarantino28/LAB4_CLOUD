@@ -8,8 +8,8 @@ RangoDHCP="$4"      # especificar formato
 # brigde = "br-int"
 
 # Extraer la dirección de red y la máscara de subred
-direccion_red=$(echo $direccion_red_cidr | cut -d '/' -f1)
-mascara_subred=$(echo $direccion_red_cidr | cut -d '/' -f2)
+direccion_red=$(echo $DireccionRed | cut -d '/' -f1)
+mascara_subred=$(echo $DireccionRed | cut -d '/' -f2)
 
 # Calcular la primera dirección disponible
 IFS='.' read -r -a octetos <<< "$direccion_red"
