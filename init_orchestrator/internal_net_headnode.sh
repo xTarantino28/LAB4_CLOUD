@@ -27,7 +27,8 @@ primera_direccion_disponible_sincdr="${octetos[0]}.${octetos[1]}.${octetos[2]}.$
 IFS='.' read -r -a octetos_segunda <<< "$primera_direccion_disponible"
 octetos_segunda[3]=$(( ${octetos_segunda[3]} + 1 ))
 segunda_direccion_disponible_cidr="${octetos_segunda[0]}.${octetos_segunda[1]}.${octetos_segunda[2]}.${octetos_segunda[3]}/$mascara_subred"
-
+echo "La primera dirección disponible es: $primera_direccion_disponible_cidr"
+echo "La segunda dirección disponible es: $segunda_direccion_disponible_cidr"
 
 
 
@@ -69,7 +70,8 @@ ip netns exec "$NombreRed"-dhcp ip addr add "$segunda_direccion_disponible_cidr"
 
 
 # Configurar DHCP con dnsmasq
-ip netns exec "$NombreRed"-dhcp dnsmasq --dhcp-range="$RangoDHCP" --interface="$NombreRed"-veth0 --dhcp-option=3,"$primera_direccion_disponible_sincdr" --dhcp-option=6,8.8.8.8,8.8.4.4
+
+ip netns exec "$NombreRed"-dhcp dnsmasq --interface="$NombreRed-veth0" --dhcp-range="$RangoDHCP" --dhcp-option=3,"$primera_direccion_disponible_sincdr" --dhcp-option=6,8.8.8.8,8.8.4.4
 
 # Mostrar información
 echo "Red interna del orquestador creada correctamente."
