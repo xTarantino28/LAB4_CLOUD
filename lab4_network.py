@@ -62,6 +62,8 @@ def execute_on_worker(worker_address, script):
     
     #stdin, stdout, stderr = ssh_client.exec_command("cd /home/ubuntu")
     stdin, stdout, stderr = ssh_client.exec_command(script, get_pty=True)
+    stdin.write(password + '\n')
+    stdin.flush()
     print(stderr.read().decode("utf-8"))
     print(stdout.read().decode("utf-8"))
     #output = ssh_session.recv(65535).decode('utf-8')
