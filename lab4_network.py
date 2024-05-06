@@ -59,8 +59,8 @@ for vlan_param in vlan_parameters:
 # Ejecución de los scripts en los Workers
 for worker_address in worker_addresses:
     execute_on_worker(worker_address, f"./init_worker.sh {worker_ovs_name} {worker_interfaces}")
-    for vlan_param in vlan_parameters:
-        execute_on_worker(worker_address, f"./vlan_comm.sh {' '.join(vlan_param)}")
+    #for vlan_param in vlan_parameters:
+    #    execute_on_worker(worker_address, f"./vlan_comm.sh {' '.join(vlan_param)}")
     
 
 print("Orquestador de cómputo inicializado exitosamente.")
