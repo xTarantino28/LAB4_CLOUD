@@ -24,7 +24,7 @@ primera_direccion_disponible_cidr="${octetos[0]}.${octetos[1]}.${octetos[2]}.${o
 primera_direccion_disponible_sincdr="${octetos[0]}.${octetos[1]}.${octetos[2]}.${octetos[3]}"
 
 # Calcular la segunda dirección disponible sumando 1 a la primera dirección disponible
-IFS='.' read -r -a octetos_segunda <<< "$primera_direccion_disponible"
+IFS='.' read -r -a octetos_segunda <<< "$primera_direccion_disponible_cidr"
 octetos_segunda[3]=$(( ${octetos_segunda[3]} + 1 ))
 segunda_direccion_disponible_cidr="${octetos_segunda[0]}.${octetos_segunda[1]}.${octetos_segunda[2]}.${octetos_segunda[3]}/$mascara_subred"
 echo "La primera dirección disponible es: $primera_direccion_disponible_cidr"
