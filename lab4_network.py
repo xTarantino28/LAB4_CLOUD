@@ -93,9 +93,9 @@ for worker_address in worker_addresses:
     for vm_param in vm_parameters:
         execute_on_worker(worker_address,f"sudo -S bash LAB4_CLOUD/implement_orchestrator/vm_script.sh {' '.join(vm_param)}")
 
-#for vlan_param in vlan_parameters:
-#    vlan_id = vlan_param[1]
-#    execute_on_headnode(f"bash implement_orchestrator/vlan_internet.sh {vlan_id}")
+for vlan_param in vlan_parameters:
+    vlan_id = vlan_param[1]
+    execute_on_headnode(f"bash implement_orchestrator/vlan_internet.sh {vlan_id}")
 
 
 print("Orquestador de cómputo inicializado exitosamente.")
