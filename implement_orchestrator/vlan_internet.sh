@@ -32,8 +32,12 @@ ip_network=$(ipcalc -n $ip_address/$subnet_mask | awk '/Network/ {split($2, part
 echo "Dirección de red asociada a la VLAN ID $VLAN_ID (formato CIDR): $ip_network/$subnet_mask"
 vlan_cidr="$ip_network/$subnet_mask"
 echo $vlan_cidr
+
+
 # regla de iptables para habilitar el enrutamiento
-iptables -t nat -A POSTROUTING -s $vlan_cidr -o $InternetInterface -j MASQUERADE
+iptables -I FORWARD -s $vlan_cidr -j ACCEPT
+iptables -I FORWARD -d $vlan_cidr -j ACCEPT
+iptables -t nat -A POSTROUTING -s $vlan_cidr -j MASQUERADE
 
 # Habilitar el enrutamiento IPv4
 echo 1 > /proc/sys/net/ipv4/ip_forward

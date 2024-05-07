@@ -30,3 +30,5 @@ ip_network=$(ipcalc -n $ip_address/$subnet_mask | awk '/Network/ {split($2, part
 
 # Imprimir la dirección de red en formato CIDR
 echo "Dirección de red asociada a la VLAN ID $VLAN_ID (formato CIDR): $ip_network/$subnet_mask"
+vlan_cidr="$ip_network/$subnet_mask"
+echo $vlan_cidr
