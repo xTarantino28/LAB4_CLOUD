@@ -3,7 +3,7 @@
 VLAN_ID="$1"
 
 # Obtener el nombre de la interfaz asociada con la VLAN
-interface_name=$(sudo ovs-vsctl list port | grep "$VLAN_ID" | awk '{print $3}' | head -n 1)
+interface_name=$(sudo ovs-vsctl list port | grep "vlan$VLAN_ID" | awk '{print $3}' | tail -n 1)
 
 # Obtener la información de la dirección IP y la máscara de subred de la interfaz
 interface_info=$(ip addr show dev $interface_name)
